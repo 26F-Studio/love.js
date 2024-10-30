@@ -1,0 +1,94 @@
+name: Love.js CI
+
+on:
+  push:
+    branches: [master, ci*]
+    tags: [pre*, v*]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout love.js
+        uses: actions/checkout@v4
+        with:
+          path: love.js
+
+      - name: Checkout megasource
+        uses: actions/checkout@v4
+        with:
+          repository: Davidobot/megasource
+          ref: emscripten
+          path: megasource
+
+      - name: Checkout love
+        uses: actions/checkout@v4
+        with:
+          repository: Davidobot/love
+          ref: emscripten
+          path: love
+
+      - name: Setup Emscripten toolchain
+        uses: mymindstorm/setup-emsdk@v14
+
+      - name: Build release version
+        run: |
+          mkdir -p build
+          emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0
+          emmake make -C build -j 4
+          cp build/love.js love.js/src/release/
+          cp build/love.wasm love.js/src/release/
+          cp build/love.worker.js love.js/src/release/
+
+      - name: Pack all files
+        run: |
+          7z a -tzip love.js.zip love.js/*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Love.js_Release
+          path: love.js.zip
+
+  build-compatible:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout love.js
+        uses: actions/checkout@v4
+
+      - name: Checkout megasource
+        uses: actions/checkout@v4
+        with:
+          repository: Davidobot/megasource
+          ref: emscripten
+          path: megasource
+
+      - name: Checkout love
+        uses: actions/checkout@v4
+        with:
+          repository: Davidobot/love
+          ref: emscripten
+          path: love
+
+      - name: Setup Emscripten toolchain
+        uses: mymindstorm/setup-emsdk@v14
+
+      - name: Build compat version
+        run: |
+          mkdir -p build
+          emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
+          emmake make -C build -j 4
+          cp build/love.js love.js/src/compat/
+          cp build/love.wasm love.js/src/compat/
+
+      - name: Pack all files
+        run: |
+          7z a -tzip love.js.zip love.js/*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Love.js_Compatible
+          path: love.js.zip
