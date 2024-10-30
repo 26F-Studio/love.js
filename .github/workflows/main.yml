@@ -1,9 +1,9 @@
 name: Love.js CI
 
 env:
-  BUILD_DIR: "build"
-  EMSDK_VERSION: "latest"
-  EMSDK_CACHE_DIR: "emsdk-cache"
+  BUILD_DIR: build
+  EMSDK_VERSION: 2.0.2
+  EMSDK_CACHE_DIR: emsdk-cache
 
 on:
   push:
