@@ -42,7 +42,7 @@ jobs:
       - name: Build release version
         run: |
           mkdir -p ${{ env.BUILD_DIR }}
-          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0
+          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0
           emmake make -C ${{ env.BUILD_DIR }} -j
       - name: Copy files
         run: |
@@ -90,7 +90,7 @@ jobs:
       - name: Build compat version
         run: |
           mkdir -p ${{ env.BUILD_DIR }}
-          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
+          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
           emmake make -C ${{ env.BUILD_DIR }} -j
       - name: Copy files
         run: |
