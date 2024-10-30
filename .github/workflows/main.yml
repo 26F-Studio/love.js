@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-release:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout love.js
         uses: actions/checkout@v4
@@ -46,12 +46,10 @@ jobs:
           emmake make -C ${{ env.BUILD_DIR }} -j
       - name: Copy files
         run: |
-          ls
-          ls ${{ env.BUILD_DIR }}
-          ls love
-          cp love/love.js src/compat/
-          cp love/love.wasm src/compat/
-          cp love/love.worker.js src/release/
+          ls ${{ env.BUILD_DIR }}/love
+          cp ${{ env.BUILD_DIR }}/love/love.js src/compat/
+          cp ${{ env.BUILD_DIR }}/love/love.wasm src/compat/
+          cp ${{ env.BUILD_DIR }}/love/love.worker.js src/release/
 
       - name: Pack all files
         run: |
@@ -64,7 +62,7 @@ jobs:
           path: love.js.zip
 
   build-compatible:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout love.js
         uses: actions/checkout@v4
@@ -96,11 +94,9 @@ jobs:
           emmake make -C ${{ env.BUILD_DIR }} -j
       - name: Copy files
         run: |
-          ls
-          ls ${{ env.BUILD_DIR }}
-          ls love
-          cp love/love.js src/compat/
-          cp love/love.wasm src/compat/
+          ls ${{ env.BUILD_DIR }}/love
+          cp ${{ env.BUILD_DIR }}/love/love.js src/compat/
+          cp ${{ env.BUILD_DIR }}/love/love.wasm src/compat/
 
       - name: Pack all files
         run: |
