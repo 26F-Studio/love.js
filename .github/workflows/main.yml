@@ -25,6 +25,7 @@ jobs:
           repository: 26F-Studio/megasource
           ref: emscripten
           path: megasource
+          submodules: recursive
 
       - name: Checkout love
         uses: actions/checkout@v4
@@ -32,6 +33,7 @@ jobs:
           repository: 26F-Studio/love-wasm
           ref: emscripten
           path: megasource/libs/love
+          submodules: recursive
 
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
