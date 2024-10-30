@@ -53,7 +53,7 @@ jobs:
 
       - name: Pack all files
         run: |
-          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!love -x!megasource love.js.zip
+          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!megasource love.js.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -90,7 +90,7 @@ jobs:
       - name: Build compat version
         run: |
           mkdir -p ${{ env.BUILD_DIR }}
-          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
+          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVEJS_COMPAT=1 -DSEXPORT_ALL=1 -DSMAIN_MODULE=1 -DSERROR_ON_UNDEFINED_SYMBOLS=0
           emmake make -C ${{ env.BUILD_DIR }} -j
       - name: Copy files
         run: |
@@ -100,7 +100,7 @@ jobs:
 
       - name: Pack all files
         run: |
-          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!love -x!megasource love.js.zip
+          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!megasource love.js.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
