@@ -25,7 +25,6 @@ jobs:
           repository: 26F-Studio/megasource
           ref: emscripten
           path: megasource
-          submodules: recursive
 
       - name: Checkout love
         uses: actions/checkout@v4
