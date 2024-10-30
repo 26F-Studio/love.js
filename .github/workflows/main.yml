@@ -22,14 +22,14 @@ jobs:
       - name: Checkout megasource
         uses: actions/checkout@v4
         with:
-          repository: Davidobot/megasource
+          repository: 26F-Studio/megasource
           ref: emscripten
           path: megasource
 
       - name: Checkout love
         uses: actions/checkout@v4
         with:
-          repository: Davidobot/love
+          repository: 26F-Studio/love-wasm
           ref: emscripten
           path: megasource/libs/love
 
