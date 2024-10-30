@@ -31,7 +31,7 @@ jobs:
         with:
           repository: Davidobot/love
           ref: emscripten
-          path: love
+          path: megasource/libs/love
 
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
@@ -81,7 +81,7 @@ jobs:
         with:
           repository: Davidobot/love
           ref: emscripten
-          path: love
+          path: megasource/libs/love
 
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
