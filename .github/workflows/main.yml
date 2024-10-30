@@ -1,5 +1,10 @@
 name: Love.js CI
 
+env:
+  BUILD_DIR: "build"
+  EMSDK_VERSION: "latest"
+  EMSDK_CACHE_DIR: "emsdk-cache"
+
 on:
   push:
     branches: [master, ci*]
@@ -13,8 +18,6 @@ jobs:
     steps:
       - name: Checkout love.js
         uses: actions/checkout@v4
-        with:
-          path: love.js
 
       - name: Checkout megasource
         uses: actions/checkout@v4
@@ -33,26 +36,26 @@ jobs:
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
         with:
-          version: 'latest'
-          actions-cache-folder: 'emsdk-cache'
+          version: ${{ env.EMSDK_VERSION }}
+          actions-cache-folder: ${{ env.EMSDK_CACHE_DIR }}
 
       - name: Build release version
         run: |
-          mkdir -p build
-          emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0
-          emmake make -C build -j
+          mkdir -p ${{ env.BUILD_DIR }}
+          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0
+          emmake make -C ${{ env.BUILD_DIR }} -j
       - name: Copy files
         run: |
           ls
-          ls build
-          ls love.js
-          cp build/love.js love.js/src/compat/
-          cp build/love.wasm love.js/src/compat/
-          cp build/love.worker.js love.js/src/release/
+          ls ${{ env.BUILD_DIR }}
+          ls love
+          cp love/love.js src/compat/
+          cp love/love.wasm src/compat/
+          cp love/love.worker.js src/release/
 
       - name: Pack all files
         run: |
-          7z a -tzip love.js.zip love.js/*
+          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!love -x!megasource love.js.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -83,25 +86,25 @@ jobs:
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
         with:
-          version: 'latest'
-          actions-cache-folder: 'emsdk-cache'
+          version: ${{ env.EMSDK_VERSION }}
+          actions-cache-folder: ${{ env.EMSDK_CACHE_DIR }}
 
       - name: Build compat version
         run: |
-          mkdir -p build
-          emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
-          emmake make -C build -j
+          mkdir -p ${{ env.BUILD_DIR }}
+          emcmake cmake -B ${{ env.BUILD_DIR }} -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
+          emmake make -C ${{ env.BUILD_DIR }} -j
       - name: Copy files
         run: |
           ls
-          ls build
-          ls love.js
-          cp build/love.js love.js/src/compat/
-          cp build/love.wasm love.js/src/compat/
+          ls ${{ env.BUILD_DIR }}
+          ls love
+          cp love/love.js src/compat/
+          cp love/love.wasm src/compat/
 
       - name: Pack all files
         run: |
-          7z a -tzip love.js.zip love.js/*
+          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!love -x!megasource love.js.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
