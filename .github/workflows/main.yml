@@ -40,9 +40,12 @@ jobs:
         run: |
           mkdir -p build
           emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0
-          emmake make -C build -j -w
+          emmake make -C build -j
       - name: Copy files
         run: |
+          ls
+          ls build
+          ls love.js
           cp build/love.js love.js/src/compat/
           cp build/love.wasm love.js/src/compat/
           cp build/love.worker.js love.js/src/release/
@@ -86,11 +89,13 @@ jobs:
       - name: Build compat version
         run: |
           mkdir -p build
-          tree /f
           emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
-          emmake make -C build -j -w
+          emmake make -C build -j
       - name: Copy files
         run: |
+          ls
+          ls build
+          ls love.js
           cp build/love.js love.js/src/compat/
           cp build/love.wasm love.js/src/compat/
 
