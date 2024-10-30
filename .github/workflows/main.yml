@@ -32,15 +32,19 @@ jobs:
 
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 'latest'
+          actions-cache-folder: 'emsdk-cache'
 
       - name: Build release version
         run: |
           mkdir -p build
           emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0
-          emmake make -C build -j 4
-          tree /f
-          cp build/love.js love.js/src/release/
-          cp build/love.wasm love.js/src/release/
+          emmake make -C build -j -w
+      - name: Copy files
+        run: |
+          cp build/love.js love.js/src/compat/
+          cp build/love.wasm love.js/src/compat/
           cp build/love.worker.js love.js/src/release/
 
       - name: Pack all files
@@ -75,13 +79,18 @@ jobs:
 
       - name: Setup Emscripten toolchain
         uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 'latest'
+          actions-cache-folder: 'emsdk-cache'
 
       - name: Build compat version
         run: |
           mkdir -p build
           tree /f
           emcmake cmake -B build -S megasource -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLOVE_JIT=0 -DLOVE_COMPAT=1 -DLOVEJS_COMPAT=1
-          emmake make -C build -j 4
+          emmake make -C build -j -w
+      - name: Copy files
+        run: |
           cp build/love.js love.js/src/compat/
           cp build/love.wasm love.js/src/compat/
 
