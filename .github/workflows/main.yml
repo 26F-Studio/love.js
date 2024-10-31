@@ -54,7 +54,7 @@ jobs:
 
       - name: Pack all files
         run: |
-          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!megasource love.js.zip
+          7z a -tzip -x!.github -x!sample -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!megasource love.js.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -101,7 +101,7 @@ jobs:
 
       - name: Pack all files
         run: |
-          7z a -tzip -x!.github -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!megasource love.js.zip
+          7z a -tzip -x!.github -x!sample -x!${{ env.BUILD_DIR }} -x!${{ env.EMSDK_CACHE_DIR }} -x!megasource love.js.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
