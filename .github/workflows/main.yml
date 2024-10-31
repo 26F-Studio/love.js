@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 26F-Studio/love-wasm
-          ref: 32e0716b43a51686f5fa9ac04ca08b6410b698a5
+          ref: emscripten
           path: megasource/libs/love
           submodules: recursive
 
